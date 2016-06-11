@@ -103,17 +103,20 @@ class ZYZIK_AdvancedResetWP
 
 	private function arwp_processing_data($post)
 	{
-		if (!is_array($post)) return;
+		if (!is_array($post)) return false;
 		$type = sanitize_text_field($post['arwp_type']);
+		$post_type = isset($post['arwp_post_type']) ? $post['arwp_post_type'] : null;
 
 		switch ($type) {
 			case 're-install': $this->arwp_re_install(); break;
-			case 'post-clear': $this->arwp_post_clear(); break;
+			case 'post-clear': $this->arwp_post_clear($post_type); break;
 			case 'delete-theme': $this->arwp_delete_theme(); break;
 			case 'delete-plugin': $this->arwp_delete_plugin(); break;
 			case 'deep-cleaning': $this->arwp_deep_cleaning(); break;
-			default: return; break;
+			default: break;
 		}
+
+		return true;
 	}
 
 	private function arwp_re_install()
@@ -129,9 +132,7 @@ class ZYZIK_AdvancedResetWP
 		}
 
 		// check admin info
-		if ($user->user_level < 10 || !is_super_admin($user->ID)) {
-			return false;
-		}
+		if (!is_super_admin($user->ID)) return false;
 
 		// get site options
 		$blog_title = get_option('blogname');
@@ -165,15 +166,34 @@ class ZYZIK_AdvancedResetWP
 		// Clear all cookies and add new
 		wp_logout();
 		wp_clear_auth_cookie();
-		wp_set_auth_cookie($user->user_id);
+		wp_set_auth_cookie($user->ID);
 
 		// Redirect user to admin panel
 		wp_redirect(admin_url('tools.php?page=advanced-reset-wp&reset=re-install'));
 		exit;
 	}
 
-	private function arwp_post_clear()
-	{}
+	private function arwp_post_clear($type)
+	{
+		// check need access
+		if (empty($type) || !is_array($type)) return false;
+		if (!current_user_can('delete_post') || !current_user_can('delete_page')) return false;
+
+		if (in_array('all', $type)) {
+			$this->arwp_delete_in_db('all');
+		} else {
+			foreach ($type as $item) {
+				$this->arwp_delete_in_db(sanitize_post($item, 'db'));
+			}
+		}
+
+		return true;
+	}
+
+	private function arwp_delete_in_db($type)
+	{
+		echo "delete $type";
+	}
 
 	private function arwp_delete_theme()
 	{

@@ -9,15 +9,15 @@
         <label><input type="radio" name="arwp_type" class="arwp-type" value="deep-cleaning" required> Глубокая очистка</label>
     </p>
     <div class="re-install">
-        <p><strong>После установки уктивировать текущие плагины или тему?</strong></p>
+        <p><strong>После установки активировать текущие плагины или тему?</strong></p>
     </div>
     <div class="post-class">
         <p><strong>Какие типы постов вы хотите удалить?</strong></p>
         <p>
             <label><input type="checkbox" name="arwp_post_type[]" class="arwp-post-type" value="post"> Посты</label><br>
             <label><input type="checkbox" name="arwp_post_type[]" class="arwp-post-type" value="page"> Страницы</label><br>
-            <label><input type="checkbox" name="arwp_post_type[]" class="arwp-post-type" value="menu"> Меню</label><br>
-            <label><input type="checkbox" name="arwp_post_type[]" class="arwp-post-type" value="media"> Медиа</label><br>
+            <label><input type="checkbox" name="arwp_post_type[]" class="arwp-post-type" value="revision"> Ревизии</label><br>
+            <label><input type="checkbox" name="arwp_post_type[]" class="arwp-post-type" value="attachment"> Медиа</label><br>
             <label><input type="checkbox" name="arwp_post_type[]" class="arwp-post-type" value="all"> Все</label>
         </p>
     </div>
