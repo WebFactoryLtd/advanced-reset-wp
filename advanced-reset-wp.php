@@ -26,14 +26,26 @@ if (!defined('ARWP_PLUGIN_BASENAME')) define('ARWP_PLUGIN_BASENAME', plugin_base
 
 
 
-class AdvancedResetWP
+class ZYZIK_AdvancedResetWP
 {
 	private $IN_SUB_MENU;
 
 	public function __construct()
 	{
+		add_action('init', array(&$this, 'arwp_output_buffer'));
+		add_action('wp_footer', array(&$this, 'arwp_end_buffer'));
 		add_action('admin_menu', array(&$this, 'arwp_register_menu'));
 		add_action('admin_enqueue_scripts', array(&$this, 'arwp_load_css_and_js'));
+	}
+
+	public function arwp_output_buffer()
+	{
+		ob_start();
+	}
+
+	public function arwp_end_buffer()
+	{
+		ob_end_flush();
 	}
 
 	/********************************************************************
@@ -69,13 +81,14 @@ class AdvancedResetWP
 	public function arwp_render_page()
 	{
 		if (current_user_can('manage_options')) {
+			require_once 'include/head.php';
+
+			// post processing
 			if (isset($_POST['arwp_button']) && !empty($_POST['arwp_input'])) {
 				if (!check_admin_referer('arwp_nonce')) return;
 
 				$this->arwp_processing_data($_POST);
 			}
-
-            require_once 'include/head.php';
 
 			// notice after reset
 			if (isset($_GET['reset'])) {
@@ -150,13 +163,13 @@ class AdvancedResetWP
 		}
 
 		// Clear all cookies and add new
-//		wp_logout();
-//		wp_clear_auth_cookie();
-//		wp_set_auth_cookie($user->user_id);
+		wp_logout();
+		wp_clear_auth_cookie();
+		wp_set_auth_cookie($user->user_id);
 
 		// Redirect user to admin panel
-//		wp_redirect(admin_url('tools.php?page=advanced-reset-wp&reset=re-install'));
-//		exit;
+		wp_redirect(admin_url('tools.php?page=advanced-reset-wp&reset=re-install'));
+		exit;
 	}
 
 	private function arwp_post_clear()
@@ -185,7 +198,7 @@ class AdvancedResetWP
             }
         }
 
-        wp_redirect(admin_url('tools.php?page=advanced-reset-wp&reset=theme'));
+        wp_safe_redirect(admin_url('tools.php?page=advanced-reset-wp&reset=theme'));
         exit;
     }
 
@@ -194,12 +207,43 @@ class AdvancedResetWP
         // check need access
         if (!current_user_can('delete_plugins')) return false;
 
+		// plugin list
+		$active = array();
+		$not_active = array();
+		$plugins = get_plugins();
+		$default = 'advanced-reset-wp/advanced-reset-wp.php';
 
-        return true;
+		// leave our plugin
+		if (array_key_exists($default, $plugins)) {
+			unset($plugins[$default]);
+		}
+
+		// detect active/inactive plugin
+		foreach ($plugins as $plugin_file => $plugin_data) {
+			if (is_plugin_active($plugin_file)) {
+				$active[] = $plugin_file;
+			} else {
+				$not_active[] = $plugin_file;
+			}
+		}
+
+		// deactivate plugins
+		deactivate_plugins($active);
+
+		// delete plugins
+		$plugin_list = array_merge($not_active, $active);
+		$delete_plugin = delete_plugins($plugin_list);
+		if (is_wp_error($delete_plugin)) {
+			echo $delete_plugin->get_error_message();
+			return false;
+		}
+
+		wp_safe_redirect(admin_url('tools.php?page=advanced-reset-wp&reset=plugin'));
+		exit;
     }
 
 	private function arwp_deep_cleaning()
 	{}
 }
 
-new AdvancedResetWP();
+new ZYZIK_AdvancedResetWP();
