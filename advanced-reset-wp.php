@@ -154,7 +154,7 @@ class ZYZIK_AdvancedResetWP
 
         // Set user password
         $query = $wpdb->prepare("UPDATE $wpdb->users SET user_pass = %s WHERE ID = %d", $user->user_pass, $user->ID);
-        $wpdb->query( $query );
+        $wpdb->query($query);
 
 		// activate this plugin
 		$activate_plugin = activate_plugin(ARWP_PLUGIN_BASENAME);
@@ -169,7 +169,7 @@ class ZYZIK_AdvancedResetWP
 		wp_set_auth_cookie($user->ID);
 
 		// Redirect user to admin panel
-		wp_redirect(admin_url('tools.php?page=advanced-reset-wp&reset=re-install'));
+		wp_safe_redirect(admin_url('tools.php?page=advanced-reset-wp&reset=re-install'));
 		exit;
 	}
 
@@ -177,7 +177,7 @@ class ZYZIK_AdvancedResetWP
 	{
 		// check need access
 		if (empty($type) || !is_array($type)) return false;
-		if (!current_user_can('delete_post') || !current_user_can('delete_page')) return false;
+		if (!current_user_can('delete_posts') || !current_user_can('delete_pages')) return false;
 
 		if (in_array('all', $type)) {
 			$this->arwp_delete_in_db('all');
@@ -191,10 +191,64 @@ class ZYZIK_AdvancedResetWP
 	}
 
 	private function arwp_delete_in_db($type)
-	{
-		echo "delete $type";
-	}
 
+	{
+		$count = null;
+
+		if ($type == 'all') {
+			global $wpdb;
+
+			$all = $wpdb->get_results("SELECT ID FROM `{$wpdb->prefix}posts`");
+			$count = count($all);
+
+			foreach ($all as $item) {
+				wp_delete_post($item->ID, true);
+			}
+
+			$wpdb->query("TRUNCATE TABLE `{$wpdb->prefix}posts`");
+		} else {
+			switch ($type) {
+				case 'post':
+					$posts = get_posts();
+					$count = count($posts);
+
+					foreach ($posts as $post) {
+						wp_delete_post($post->ID, true);
+					}
+					break;
+				case 'page':
+					$pages = get_pages();
+					$count = count($pages);
+
+					foreach ($pages as $page) {
+						wp_delete_post($page->ID, true);
+					}
+					break;
+				case 'revision':
+					global $wpdb;
+
+					$revision = $wpdb->get_results("SELECT ID FROM `{$wpdb->prefix}posts` WHERE post_type = 'revision'");
+					$count = count($revision);
+
+					foreach ($revision as $item) {
+						wp_delete_post($item->ID, true);
+					}
+					break;
+				case 'attachment';
+					$attachments = get_posts(array('post_type' => 'attachment'));
+					$count = count($attachments);
+
+					foreach ($attachments as $attachment) {
+						wp_delete_post($attachment->ID, true);
+					}
+					break;
+				default:
+					break;
+			}
+		}
+
+		echo "delete $count item from $type<br>";
+	}
 	private function arwp_delete_theme()
 	{
         // check need access
