@@ -1,6 +1,6 @@
 <form id="arwp_form" action="" method="post">
     <?php wp_nonce_field('arwp_nonce'); ?>
-    <p><strong>Тип сброса:</strong></p>
+    <h3>Тип сброса:</h3>
     <p>
         <label><input type="radio" name="arwp_type" class="arwp-type" value="re-install"> Re-install</label><br>
         <label><input type="radio" name="arwp_type" class="arwp-type" value="post-clear"> Очистка постов</label><br>

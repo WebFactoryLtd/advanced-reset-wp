@@ -32,10 +32,10 @@ class ZYZIK_AdvancedResetWP
 
 	public function __construct()
 	{
-		add_action('init', array(&$this, 'arwp_output_buffer'));
-		add_action('wp_footer', array(&$this, 'arwp_end_buffer'));
-		add_action('admin_menu', array(&$this, 'arwp_register_menu'));
-		add_action('admin_enqueue_scripts', array(&$this, 'arwp_load_css_and_js'));
+		add_action('init', array($this, 'arwp_output_buffer'));
+		add_action('wp_footer', array($this, 'arwp_end_buffer'));
+		add_action('admin_menu', array($this, 'arwp_register_menu'));
+		add_action('admin_enqueue_scripts', array($this, 'arwp_load_css_and_js'));
 	}
 
 	public function arwp_output_buffer()
@@ -59,7 +59,7 @@ class ZYZIK_AdvancedResetWP
 			'Advanced Reset WP',
 			'manage_options',
 			'advanced-reset-wp',
-			array(&$this, 'arwp_render_page')
+			array($this, 'arwp_render_page')
 		);
 	}
 
@@ -149,7 +149,7 @@ class ZYZIK_AdvancedResetWP
 			$wpdb->query("DROP TABLE {$table}");
 		}
 
-		// install WordPress || $P$B6prmwdXWkVceKPfcVqzz6nmY8PldE.
+		// install WordPress
 		wp_install($blog_title, $user->user_login, $user->user_email, $blog_public, '', $user->user_pass, $blog_language);
 
         // Set user password
@@ -191,21 +191,20 @@ class ZYZIK_AdvancedResetWP
 	}
 
 	private function arwp_delete_in_db($type)
-
 	{
 		$count = null;
 
 		if ($type == 'all') {
 			global $wpdb;
 
-			$all = $wpdb->get_results("SELECT ID FROM `{$wpdb->prefix}posts`");
+			$all = $wpdb->get_results("SELECT ID FROM $wpdb->posts");
 			$count = count($all);
 
 			foreach ($all as $item) {
 				wp_delete_post($item->ID, true);
 			}
 
-			$wpdb->query("TRUNCATE TABLE `{$wpdb->prefix}posts`");
+			$wpdb->query("TRUNCATE TABLE $wpdb->posts");
 		} else {
 			switch ($type) {
 				case 'post':
@@ -227,7 +226,7 @@ class ZYZIK_AdvancedResetWP
 				case 'revision':
 					global $wpdb;
 
-					$revision = $wpdb->get_results("SELECT ID FROM `{$wpdb->prefix}posts` WHERE post_type = 'revision'");
+					$revision = $wpdb->get_results("SELECT ID FROM $wpdb->posts WHERE post_type = 'revision'");
 					$count = count($revision);
 
 					foreach ($revision as $item) {
@@ -249,6 +248,7 @@ class ZYZIK_AdvancedResetWP
 
 		echo "delete $count item from $type<br>";
 	}
+
 	private function arwp_delete_theme()
 	{
         // check need access
@@ -257,10 +257,9 @@ class ZYZIK_AdvancedResetWP
         // get need themes
         $lists = wp_get_themes();
         $active = wp_get_theme();
-        $default = 'twentysixteen';
 
         foreach ($lists as $theme) {
-            if ($theme->Template != $active['Template'] && $theme->Template != $default) {
+            if ($theme->Template != $active['Template']) {
                 $delete_theme = delete_theme($theme->template);
                 if (is_wp_error($delete_theme)) {
                     echo $delete_theme->get_error_message();
