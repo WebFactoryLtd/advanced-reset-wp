@@ -1,6 +1,6 @@
-Author: 3y3ik
-Author URI: http://3y3ik.name/
-Plugin Version: 1.0.0
+- Author: 3y3ik
+- Author URI: http://3y3ik.name/
+- Plugin Version: 1.0.0
 
 # advanced-reset-wp
 #### WordPress Plugin: re-install wp, delete theme, plugin and posts
