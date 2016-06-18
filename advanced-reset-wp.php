@@ -1,12 +1,14 @@
 <?php
 /*
 Plugin Name: Advanced Reset WP
-Plugin URI: http://wordpress.org/plugin/
-Description: A brief description of the Plugin
-Version: 1.0
+Plugin URI: https://github.com/3y3ik/advanced-reset-wp
+Description: Re-install WordPress, delete themes, plugins and posts, pages, attachments
 Author: 3y3ik
-Author URI: http://wordpress.3y3ik.name/
-License: A "advanced-reset" license name e.g. GPL2
+Author URI: http://3y3ik.name/
+Version: 1.0.0
+Text Domain: arwp
+License: GPLv2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
 
 /**
