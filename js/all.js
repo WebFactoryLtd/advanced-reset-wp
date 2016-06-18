@@ -3,45 +3,56 @@
 
     $(document).ready(function() {
         var type = $('.arwp-type'),
+            form = $('#arwp_form'),
             input = $('#arwp-input'),
+            result = $('#result'),
             submit = $('#arwp-button'),
-            post_class = $('.post-class'),
-            re_install_class = $('.re-install');
+            post_class = $('.post-class');
 
 
-        var hideElement = function() {
-            post_class.hide();
-            re_install_class.hide();
-        };
-        hideElement();
-
+        post_class.hide();
         type.click(function() {
             var val = $(this).val();
+            var info = '.' + val + '-info';
 
-            switch (val) {
-                case 're-install':
-                    re_install_class.show();
-                    post_class.hide();
-                    break;
-                case 'post-clear':
-                    post_class.show();
-                    re_install_class.hide();
-                    break;
-                default:
-                    hideElement();
+            if (val == 'post-clear') {
+                post_class.show();
+            } else {
+                post_class.hide();
             }
 
-            //if ($(this).val() == 'post-clear') {
-            //   post_class.show();
-            //} else {
-            //   post_class.hide();
-            //}
+            $('.arwp-form-info > p').hide();
+            $('.arwp-form-info').find(info).fadeIn('fast');
         });
 
-        submit.click(function() {
+
+        submit.click(function(e) {
             var message = 'Вы уверены, что хотите удалить данные?';
+
+            if (!type.prop('checked') && !input.val()) {
+                return true;
+            }
+
             if (confirm(message)) {
-                submit.submit();
+                e.preventDefault();
+                $.ajax({
+                    url: ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'arwp_ajax',
+                        nonce: arwp_ajax.nonce,
+                        my_form: form.serialize()
+                    },
+                    beforeSend: function() {
+                        $('#loader, .overflow').fadeIn('slow');
+                    },
+                    success: function(data) {
+                        result.find('p').remove();
+                        result.append(data);
+                        $('#loader, .overflow').fadeOut('slow');
+                    }
+                });
+                return true;
             } else {
                 input.val('');
                 return false;

@@ -1,0 +1,109 @@
+.arwp-wrap h2 {
+  text-align: center; }
+
+.arwp-block {
+  width: 100%;
+  margin-top: 15px; }
+  .arwp-block .arwp-left,
+  .arwp-block .arwp-right,
+  .arwp-block .arwp-center {
+    padding: 15px 30px;
+    background-color: #fff; }
+  .arwp-block .arwp-center {
+    margin-top: 25px;
+    padding: 10px 30px;
+    width: calc(100% - 60px);
+    border-left: 4px solid #ffba00; }
+    .arwp-block .arwp-center p {
+      margin: 0;
+      font-style: italic; }
+      .arwp-block .arwp-center p.left {
+        float: left; }
+      .arwp-block .arwp-center p.right {
+        float: right; }
+  .arwp-block .arwp-left {
+    float: left;
+    position: relative;
+    margin-right: 25px;
+    border-left: 4px solid #00a0d2;
+    width: calc(70% - 60px - 25px - 4px); }
+    .arwp-block .arwp-left .overflow {
+      width: 100%;
+      height: 100%;
+      display: none;
+      background-color: rgba(0, 160, 210, 0.2);
+      position: absolute;
+      left: 0;
+      top: 0; }
+    .arwp-block .arwp-left .spinner {
+      float: none;
+      margin: 0;
+      position: absolute;
+      visibility: visible;
+      left: calc(50% - 20px);
+      top: calc(50% - 20px); }
+  .arwp-block .arwp-right {
+    float: right;
+    width: calc(30% - 60px - 4px);
+    border-left: 4px solid #46b450; }
+  .arwp-block .arwp-form-view {
+    width: 65%;
+    float: left; }
+  .arwp-block .arwp-form-info {
+    float: right;
+    width: calc(35% - 10px); }
+    .arwp-block .arwp-form-info h3 {
+      text-align: center; }
+    .arwp-block .arwp-form-info p {
+      display: none;
+      padding: 10px;
+      font-weight: bold;
+      text-align: justify;
+      border: 1px solid #f00; }
+
+/* loader */
+#loader {
+  margin: 10px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+  display: none; }
+  #loader > div {
+    background-color: #333;
+    height: 100%;
+    width: 6px;
+    display: inline-block;
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out; }
+  #loader .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s; }
+  #loader .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s; }
+  #loader .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s; }
+  #loader .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s; }
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    -webkit-transform: scaleY(0.4); }
+  20% {
+    -webkit-transform: scaleY(1); } }
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4); }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1); } }
+@media (max-width: 767px) {
+  .arwp-block .arwp-left,
+  .arwp-block .arwp-right {
+    float: none;
+    width: calc(100% - 60px); }
+  .arwp-block .arwp-left {
+    margin-bottom: 25px; } }
