@@ -27,7 +27,7 @@
 
 
         submit.click(function(e) {
-            var message = 'Вы уверены, что хотите удалить данные?';
+            var message = 'Are you sure you want to delete the data?';
 
             if (!type.prop('checked') && !input.val()) {
                 return true;
