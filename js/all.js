@@ -44,10 +44,10 @@
                         my_form: form.serialize()
                     },
                     beforeSend: function() {
+                        result.find('p').remove();
                         $('#loader, .overflow').fadeIn('slow');
                     },
                     success: function(data) {
-                        result.find('p').remove();
                         result.append(data);
                         $('#loader, .overflow').fadeOut('slow');
                     }

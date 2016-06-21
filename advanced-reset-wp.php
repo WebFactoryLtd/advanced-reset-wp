@@ -5,7 +5,7 @@ Plugin URI: https://github.com/3y3ik/advanced-reset-wp
 Description: Re-install WordPress, delete themes, plugins and posts, pages, attachments
 Author: 3y3ik
 Author URI: http://3y3ik.name/
-Version: 1.0.0
+Version: 1.0.1
 Text Domain: arwp
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -388,6 +388,7 @@ class ZYZIK_AdvancedResetWP
 	{
 		$this->arwp_delete_plugin();
 		$this->arwp_delete_theme();
+		$this->arwp_post_clear(array('all'));
 		$this->arwp_re_install();
 	}
 }

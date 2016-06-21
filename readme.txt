@@ -5,7 +5,7 @@ Plugin URL: https://github.com/3y3ik/advanced-reset-wp
 Tags: clean, clean database, cleaner, database clean, database reset, developer, installation, reset, reset database, reset wordpress, reset wp, restore, wordpress-reset, wp reset, wp-reset, remove post, remove page, delete plugins, delete themes
 Requires at least: 4.0
 Tested up to: 4.5.2
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,9 +27,12 @@ In addition, our plug-in gives developers the ability to one-click delete themes
 
 == Screenshots ==
 
-1. `/assets/screenshot-1.png`
+1. Admin page of the plugin
 
 == Changelog ==
+
+= 1.0.1 =
+* fix deep cleaning after which was not removed attachments files
 
 = 1.0.0 =
 * First release.
