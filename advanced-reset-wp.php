@@ -5,7 +5,7 @@ Plugin URI: https://github.com/3y3ik/advanced-reset-wp
 Description: Re-install WordPress, delete themes, plugins and posts, pages, attachments
 Author: 3y3ik
 Author URI: http://3y3ik.name/
-Version: 1.0.1
+Version: 1.1.0
 Text Domain: arwp
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,7 +21,7 @@ if (!is_admin()) return;
 /**
  * Define common constants
  */
-if (!defined('ARWP_PLUGIN_VERSION')) define('ARWP_PLUGIN_VERSION', '1.0.0');
+if (!defined('ARWP_PLUGIN_VERSION')) define('ARWP_PLUGIN_VERSION', '1.1.0');
 if (!defined('ARWP_PLUGIN_DIR_PATH')) define('ARWP_PLUGIN_DIR_PATH', plugins_url('', __FILE__));
 if (!defined('ARWP_PLUGIN_BASENAME')) define('ARWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
@@ -36,6 +36,8 @@ class ZYZIK_AdvancedResetWP
 	 * @var string
 	 */
 	private $IN_SUB_MENU;
+	private $uploads_dir;
+	private $active_theme;
 
 	/**
 	 * ZYZIK_AdvancedResetWP constructor
@@ -43,6 +45,9 @@ class ZYZIK_AdvancedResetWP
 	 */
 	public function __construct()
 	{
+		$this->uploads_dir = wp_get_upload_dir()['basedir'];
+		$this->active_theme = wp_get_theme();
+
 		add_action('admin_menu', array($this, 'arwp_register_menu'));
 		add_action('admin_enqueue_scripts', array($this, 'arwp_load_css_and_js'));
 		load_plugin_textdomain('arwp', false, basename(dirname(__FILE__)) .'/languages');
@@ -86,7 +91,7 @@ class ZYZIK_AdvancedResetWP
 
 	/**
 	 * Ajax action
-	 * @return null
+	 * @return void
 	 */
 	public function arwp_ajax_callback()
 	{
@@ -129,6 +134,7 @@ class ZYZIK_AdvancedResetWP
 
 		switch ($type) {
 			case 're-install':
+				$this->arwp_processing_clear_uploads();
 				$this->arwp_re_install();
 				break;
 			case 'post-clear':
@@ -139,6 +145,9 @@ class ZYZIK_AdvancedResetWP
 				break;
 			case 'delete-plugin':
 				$this->arwp_delete_plugin();
+				break;
+			case 'clear-uploads':
+				$this->arwp_processing_clear_uploads();
 				break;
 			case 'deep-cleaning':
 				$this->arwp_deep_cleaning();
@@ -198,6 +207,9 @@ class ZYZIK_AdvancedResetWP
 		if (is_wp_error($activate_plugin)) {
 			wp_die($activate_plugin->get_error_message());
 		}
+
+		// switch to active theme
+		switch_theme($this->active_theme->get_stylesheet());
 
 		// clear all cookies and add new
 		wp_logout();
@@ -301,7 +313,7 @@ class ZYZIK_AdvancedResetWP
 
 	/**
 	 * Remove themes
-	 * @return bool
+	 * @return void
 	 */
 	private function arwp_delete_theme()
 	{
@@ -315,10 +327,9 @@ class ZYZIK_AdvancedResetWP
 		// get need themes
 		$count = 0;
 		$lists = wp_get_themes();
-		$active = wp_get_theme();
 
 		foreach ($lists as $theme) {
-			if ($theme->Template != $active['Template']) {
+			if ($theme->Template != $this->active_theme['Template']) {
 				$delete_theme = delete_theme($theme->template);
 				if (is_wp_error($delete_theme)) {
 					wp_die($delete_theme->get_error_message());
@@ -329,12 +340,11 @@ class ZYZIK_AdvancedResetWP
 		}
 
 		echo wpautop(sprintf(esc_html__('All removed %d themes!', 'arwp'), $count));
-		return true;
 	}
 
 	/**
 	 * Remove plugins
-	 * @return bool
+	 * @return void
 	 */
 	private function arwp_delete_plugin()
 	{
@@ -349,12 +359,11 @@ class ZYZIK_AdvancedResetWP
 		$active = array();
 		$not_active = array();
 		$plugins = get_plugins();
-		$default = 'advanced-reset-wp/advanced-reset-wp.php';
 		$count = count($plugins) - 1;
 
 		// leave our plugin
-		if (array_key_exists($default, $plugins)) {
-			unset($plugins[$default]);
+		if (array_key_exists(ARWP_PLUGIN_BASENAME, $plugins)) {
+			unset($plugins[ARWP_PLUGIN_BASENAME]);
 		}
 
 		// detect active/inactive plugin
@@ -377,7 +386,33 @@ class ZYZIK_AdvancedResetWP
 		}
 
 		echo wpautop(sprintf(esc_html__('All removed %d plugins!', 'arwp'), $count));
-		return true;
+	}
+
+	/**
+	 * Text status before/after starting
+	 * clear "uploads" folder
+	 * @return void
+	 */
+	private function arwp_processing_clear_uploads()
+	{
+		echo wpautop(esc_html__('Starting clear "uploads" folder...', 'arwp'));
+		$this->arwp_clear_uploads($this->uploads_dir);
+		echo wpautop(esc_html__('Folder "uploads" successful cleared!', 'arwp'));
+	}
+
+	/**
+	 * Clear "uploads" folder
+	 * @param string $dir
+	 * @return bool
+	 */
+	private function arwp_clear_uploads($dir)
+	{
+		$files = array_diff(scandir($dir), array('.', '..'));
+		foreach ($files as $file) {
+			(is_dir("$dir/$file")) ? $this->arwp_clear_uploads("$dir/$file") : unlink("$dir/$file");
+		}
+
+		return ($dir != $this->uploads_dir) ? rmdir($dir) : true;
 	}
 
 	/**
@@ -388,7 +423,7 @@ class ZYZIK_AdvancedResetWP
 	{
 		$this->arwp_delete_plugin();
 		$this->arwp_delete_theme();
-		$this->arwp_post_clear(array('all'));
+		$this->arwp_processing_clear_uploads();
 		$this->arwp_re_install();
 	}
 }

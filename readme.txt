@@ -4,8 +4,8 @@ Author URI: http://3y3ik.name/
 Plugin URL: https://github.com/3y3ik/advanced-reset-wp
 Tags: clean, clean database, cleaner, database clean, database reset, developer, installation, reset, reset database, reset wordpress, reset wp, restore, wordpress-reset, wp reset, wp-reset, remove post, remove page, delete plugins, delete themes
 Requires at least: 4.0
-Tested up to: 4.5.2
-Stable tag: 1.0.1
+Tested up to: 4.5.3
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -15,9 +15,17 @@ Re-install WordPress, delete themes, plugins and posts, pages, attachments.
 
 This plugin is very helpful for plugin and theme developers.
 
-Resets the WordPress database back to it's defaults. Deletes all customizations and content. Does not modify files only resets the database.
+Resets the WordPress database back to it's defaults. Deletes all customizations and content.
 
 In addition, our plug-in gives developers the ability to one-click delete themes or plugins. Also, delete posts, pages, revisions and attachments.
+
+= Featured list =
+* Re-install WordPress - this option a reset makes a fresh installation of your database. Therefore, ANY data in your database will be lost. There will also be completely cleared folder "uploads"
+* Post cleaning - this option is to remove posts, pages, revisions, attachments or all items
+* Delete themes - this option is to remove all of your theme except active theme
+* Delete plugins - this option is to remove all of your plugins
+* Clear "uploads" folder - this option is to clean the "uploads" folder
+* Deep cleaning - this option removes the your plugins and themes, cleared "uploads" folder and then start a re-installation WordPress!
 
 == Installation ==
 
@@ -31,8 +39,12 @@ In addition, our plug-in gives developers the ability to one-click delete themes
 
 == Changelog ==
 
+= 1.1.0 =
+* +new option clear "uploads" folder
+* *activate current theme after reinstall WordPress
+
 = 1.0.1 =
-* fix deep cleaning after which was not removed attachments files
+* *fix deep cleaning after which was not removed attachments files
 
 = 1.0.0 =
-* First release.
+* +first release

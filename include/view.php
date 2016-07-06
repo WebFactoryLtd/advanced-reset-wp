@@ -6,10 +6,11 @@
 				<form id="arwp_form" action="" method="post">
 					<h3><?php esc_html_e('Reset type:', 'arwp'); ?></h3>
 					<p>
-						<label><input type="radio" name="arwp_type" class="arwp-type" value="re-install"><?php esc_html_e('Re-install WP', 'arwp'); ?></label><br>
+						<label><input type="radio" name="arwp_type" class="arwp-type" value="re-install"><?php esc_html_e('Re-install WordPress', 'arwp'); ?></label><br>
 						<label><input type="radio" name="arwp_type" class="arwp-type" value="post-clear"><?php esc_html_e('Post cleaning', 'arwp'); ?></label><br>
 						<label><input type="radio" name="arwp_type" class="arwp-type" value="delete-theme"><?php esc_html_e('Delete themes', 'arwp'); ?></label><br>
 						<label><input type="radio" name="arwp_type" class="arwp-type" value="delete-plugin"><?php esc_html_e('Delete plugins', 'arwp'); ?></label><br>
+						<label><input type="radio" name="arwp_type" class="arwp-type" value="clear-uploads"><?php esc_html_e('Clear "uploads" folder', 'arwp'); ?></label><br>
 						<label><input type="radio" name="arwp_type" class="arwp-type" value="deep-cleaning" required><?php esc_html_e('Deep cleaning', 'arwp'); ?></label>
 					</p>
 					<div class="post-class">
@@ -33,11 +34,12 @@
 			</div>
 			<div class="arwp-form-info">
 				<h3><?php esc_html_e('Information:', 'arwp'); ?></h3>
-				<p class="re-install-info"><?php esc_html_e('The reset makes a fresh installation of your database. Therefore, ANY data in your database will be lost.', 'arwp'); ?></p>
-				<p class="post-clear-info"><?php esc_html_e('This item is to remove posts, pages, revisions or attachments!', 'arwp'); ?></p>
-				<p class="delete-theme-info"><?php esc_html_e('This item is to remove all of your theme!', 'arwp'); ?></p>
-				<p class="delete-plugin-info"><?php esc_html_e('This item is to remove all of your plugins!', 'arwp'); ?></p>
-				<p class="deep-cleaning-info"><?php esc_html_e('Deep cleaning removes the your plugins and themes, and then start a re-installation WordPress!', 'arwp'); ?></p>
+				<p class="re-install-info"><?php esc_html_e('This option a reset makes a fresh installation of your database. Therefore, ANY data in your database will be lost. There will also be completely cleared folder "uploads"!', 'arwp'); ?></p>
+				<p class="post-clear-info"><?php esc_html_e('This option is to remove posts, pages, revisions, attachments or all items!', 'arwp'); ?></p>
+				<p class="delete-theme-info"><?php esc_html_e('This option is to remove all of your theme except active theme!', 'arwp'); ?></p>
+				<p class="delete-plugin-info"><?php esc_html_e('This option is to remove all of your plugins!', 'arwp'); ?></p>
+				<p class="clear-uploads-info"><?php esc_html_e('This option is to clean the "uploads" folder!', 'arwp'); ?></p>
+				<p class="deep-cleaning-info"><?php esc_html_e('This option removes the your plugins and themes, cleared "uploads" folder and then start a re-installation WordPress!', 'arwp'); ?></p>
 			</div>
 			<div class="overflow">
 				<span class="spinner"></span>
