@@ -5,7 +5,7 @@ Plugin URI: https://github.com/3y3ik/advanced-reset-wp
 Description: Re-install WordPress, delete themes, plugins and posts, pages, attachments
 Author: 3y3ik
 Author URI: http://3y3ik.name/
-Version: 1.1.0
+Version: 1.2.0
 Text Domain: arwp
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,7 +21,7 @@ if (!is_admin()) return;
 /**
  * Define common constants
  */
-if (!defined('ARWP_PLUGIN_VERSION')) define('ARWP_PLUGIN_VERSION', '1.1.0');
+if (!defined('ARWP_PLUGIN_VERSION')) define('ARWP_PLUGIN_VERSION', '1.2.0');
 if (!defined('ARWP_PLUGIN_DIR_PATH')) define('ARWP_PLUGIN_DIR_PATH', plugins_url('', __FILE__));
 if (!defined('ARWP_PLUGIN_BASENAME')) define('ARWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
@@ -134,6 +134,9 @@ class ZYZIK_AdvancedResetWP
 
 		switch ($type) {
 			case 're-install':
+				$this->arwp_re_install();
+				break;
+			case 're-install-uploads':
 				$this->arwp_processing_clear_uploads();
 				$this->arwp_re_install();
 				break;
@@ -168,17 +171,9 @@ class ZYZIK_AdvancedResetWP
 		echo wpautop(esc_html__('Starting re-install WordPress...', 'arwp'));
 
 		global $current_user;
-		$user = null;
-
-		// get admin info
-		if ($current_user->user_login != 'admin') {
-			$user = get_user_by('login', 'admin');
-		} else {
-			$user = $current_user;
-		}
 
 		// check admin info
-		if (!is_super_admin($user->ID)) return false;
+		if (!is_super_admin($current_user->ID)) return false;
 
 		// get site options
 		$blog_title = get_option('blogname');
@@ -196,10 +191,10 @@ class ZYZIK_AdvancedResetWP
 		}
 
 		// install WordPress
-		wp_install($blog_title, $user->user_login, $user->user_email, $blog_public, '', $user->user_pass, $blog_language);
+		$install = wp_install($blog_title, $current_user->user_login, $current_user->user_email, $blog_public, '', $current_user->user_pass, $blog_language);
 
 		// set user password
-		$query = $wpdb->prepare("UPDATE $wpdb->users SET user_pass = %s WHERE ID = %d", $user->user_pass, $user->ID);
+		$query = $wpdb->prepare("UPDATE $wpdb->users SET user_pass = %s WHERE ID = %d", $current_user->user_pass, $install['user_id']);
 		$wpdb->query($query);
 
 		// activate this plugin
@@ -255,56 +250,55 @@ class ZYZIK_AdvancedResetWP
 	{
 		$count = null;
 
-		if ($type == 'all') {
-			global $wpdb;
+		switch ($type) {
+			case 'all':
+				global $wpdb;
 
-			$all = $wpdb->get_results("SELECT ID FROM $wpdb->posts");
-			$count = count($all);
+				$all = $wpdb->get_results("SELECT ID FROM {$wpdb->posts}");
+				$count = count($all);
 
-			foreach ($all as $item) {
-				wp_delete_post($item->ID, true);
-			}
+				foreach ($all as $item) {
+					wp_delete_post($item->ID, true);
+				}
 
-			$wpdb->query("TRUNCATE TABLE $wpdb->posts");
-		} else {
-			switch ($type) {
-				case 'post':
-					$posts = get_posts();
-					$count = count($posts);
+				$wpdb->query("TRUNCATE TABLE {$wpdb->posts}");
+				break;
+			case 'post':
+				$posts = get_posts();
+				$count = count($posts);
 
-					foreach ($posts as $post) {
-						wp_delete_post($post->ID, true);
-					}
-					break;
-				case 'page':
-					$pages = get_pages();
-					$count = count($pages);
+				foreach ($posts as $post) {
+					wp_delete_post($post->ID, true);
+				}
+				break;
+			case 'page':
+				$pages = get_pages();
+				$count = count($pages);
 
-					foreach ($pages as $page) {
-						wp_delete_post($page->ID, true);
-					}
-					break;
-				case 'revision':
-					global $wpdb;
+				foreach ($pages as $page) {
+					wp_delete_post($page->ID, true);
+				}
+				break;
+			case 'revision':
+				global $wpdb;
 
-					$revision = $wpdb->get_results("SELECT ID FROM $wpdb->posts WHERE post_type = 'revision'");
-					$count = count($revision);
+				$revision = $wpdb->get_results("SELECT ID FROM {$wpdb->posts} WHERE post_type = 'revision'");
+				$count = count($revision);
 
-					foreach ($revision as $item) {
-						wp_delete_post($item->ID, true);
-					}
-					break;
-				case 'attachment';
-					$attachments = get_posts(array('post_type' => 'attachment'));
-					$count = count($attachments);
+				foreach ($revision as $item) {
+					wp_delete_post($item->ID, true);
+				}
+				break;
+			case 'attachment';
+				$attachments = get_posts(array('post_type' => 'attachment'));
+				$count = count($attachments);
 
-					foreach ($attachments as $attachment) {
-						wp_delete_post($attachment->ID, true);
-					}
-					break;
-				default:
-					break;
-			}
+				foreach ($attachments as $attachment) {
+					wp_delete_post($attachment->ID, true);
+				}
+				break;
+			default:
+				break;
 		}
 
 		echo wpautop(sprintf(esc_html__('All removed %d posts type %s!', 'arwp'), $count, $type));

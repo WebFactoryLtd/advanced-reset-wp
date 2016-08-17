@@ -44,11 +44,11 @@
     width: calc(30% - 60px - 4px);
     border-left: 4px solid #46b450; }
   .arwp-block .arwp-form-view {
-    width: 65%;
+    width: 55%;
     float: left; }
   .arwp-block .arwp-form-info {
     float: right;
-    width: calc(35% - 10px); }
+    width: calc(45% - 10px); }
     .arwp-block .arwp-form-info h3 {
       text-align: center; }
     .arwp-block .arwp-form-info p {

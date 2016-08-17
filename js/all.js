@@ -29,12 +29,14 @@
         submit.click(function(e) {
             var message = 'Are you sure you want to delete the data?';
 
-            if (!type.prop('checked') && !input.val()) {
-                return true;
-            }
-
             if (confirm(message)) {
                 e.preventDefault();
+
+                if (!$('input[name="arwp_type"]').is(':checked') || !input.val()) {
+                    input.focus();
+                    return true;
+                }
+
                 $.ajax({
                     url: ajaxurl,
                     type: 'POST',
