@@ -5,7 +5,7 @@ Plugin URI: https://github.com/3y3ik/advanced-reset-wp
 Description: Re-install WordPress, delete themes, plugins and posts, pages, attachments
 Author: 3y3ik
 Author URI: http://3y3ik.name/
-Version: 1.2.0
+Version: 1.2.1
 Text Domain: arwp
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,7 +21,7 @@ if (!is_admin()) return;
 /**
  * Define common constants
  */
-if (!defined('ARWP_PLUGIN_VERSION')) define('ARWP_PLUGIN_VERSION', '1.2.0');
+if (!defined('ARWP_PLUGIN_VERSION')) define('ARWP_PLUGIN_VERSION', '1.2.1');
 if (!defined('ARWP_PLUGIN_DIR_PATH')) define('ARWP_PLUGIN_DIR_PATH', plugins_url('', __FILE__));
 if (!defined('ARWP_PLUGIN_BASENAME')) define('ARWP_PLUGIN_BASENAME', plugin_basename(__FILE__));
 
@@ -32,9 +32,7 @@ if (!defined('ARWP_PLUGIN_BASENAME')) define('ARWP_PLUGIN_BASENAME', plugin_base
  */
 class ZYZIK_AdvancedResetWP
 {
-	/**
-	 * @var string
-	 */
+
 	private $IN_SUB_MENU;
 	private $uploads_dir;
 	private $active_theme;
@@ -45,7 +43,7 @@ class ZYZIK_AdvancedResetWP
 	 */
 	public function __construct()
 	{
-		$this->uploads_dir = wp_get_upload_dir()['basedir'];
+		$this->uploads_dir = wp_get_upload_dir();
 		$this->active_theme = wp_get_theme();
 
 		add_action('admin_menu', array($this, 'arwp_register_menu'));
@@ -57,7 +55,7 @@ class ZYZIK_AdvancedResetWP
 
 	/**
 	 * Add sub menu in tools
-	 * @return null
+	 * @return void
 	 */
 	public function arwp_register_menu()
 	{
@@ -112,7 +110,7 @@ class ZYZIK_AdvancedResetWP
 
 	/**
 	 * Render admin page
-	 * @return null
+	 * @return void
 	 */
 	public function arwp_render_page()
 	{
@@ -390,7 +388,7 @@ class ZYZIK_AdvancedResetWP
 	private function arwp_processing_clear_uploads()
 	{
 		echo wpautop(esc_html__('Starting clear "uploads" folder...', 'arwp'));
-		$this->arwp_clear_uploads($this->uploads_dir);
+		$this->arwp_clear_uploads($this->uploads_dir['basedir']);
 		echo wpautop(esc_html__('Folder "uploads" successful cleared!', 'arwp'));
 	}
 
@@ -406,12 +404,12 @@ class ZYZIK_AdvancedResetWP
 			(is_dir("$dir/$file")) ? $this->arwp_clear_uploads("$dir/$file") : unlink("$dir/$file");
 		}
 
-		return ($dir != $this->uploads_dir) ? rmdir($dir) : true;
+		return ($dir != $this->uploads_dir['basedir']) ? rmdir($dir) : true;
 	}
 
 	/**
 	 * Deep cleaning
-	 * @return bool
+	 * @return void
 	 */
 	private function arwp_deep_cleaning()
 	{
