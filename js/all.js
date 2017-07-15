@@ -15,7 +15,7 @@
             var val = $(this).val();
             var info = '.' + val + '-info';
 
-            if (val == 'post-clear') {
+            if (val === 'post-clear') {
                 post_class.show();
             } else {
                 post_class.hide();
