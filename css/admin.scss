@@ -77,6 +77,22 @@
       border: 1px solid #f00;
     }
   }
+
+  #donate {
+    text-align: center;
+    margin-bottom: 30px;
+
+    .dbox-donation-button {
+      color: #fff;
+      display: inline-block;
+      background:#2d81c5 url('https://d1iczxrky3cnb2.cloudfront.net/red_logo.png') no-repeat 18px center;
+      text-decoration: none;
+      border-radius: 2px;
+      padding: 13px 17px 13px 56px;
+      box-shadow: 0 1px 0 0 #1f5a89;
+      text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    }
+  }
 }
 
 /* loader */

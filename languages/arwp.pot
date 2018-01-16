@@ -1,0 +1,206 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-01-16 23:31+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco - https://localise.biz/"
+
+#. Name of the plugin
+#: advanced-reset-wp.php:61 advanced-reset-wp.php:62 include/view.php:2
+msgid "Advanced Reset WP"
+msgstr ""
+
+#: advanced-reset-wp.php:93 advanced-reset-wp.php:218 advanced-reset-wp.php:305
+#: advanced-reset-wp.php:335
+msgid "You are not allowed to perform this action!"
+msgstr ""
+
+#: advanced-reset-wp.php:99
+msgid "Invalid code!"
+msgstr ""
+
+#: advanced-reset-wp.php:162
+msgid "Starting re-install WordPress..."
+msgstr ""
+
+#: advanced-reset-wp.php:203
+msgid "WordPress successfully re-install!"
+msgstr ""
+
+#: advanced-reset-wp.php:204
+msgid "Please refresh this page"
+msgstr ""
+
+#: advanced-reset-wp.php:222
+msgid "Starting remove all posts..."
+msgstr ""
+
+#: advanced-reset-wp.php:226
+#, php-format
+msgid "Starting remove posts type %s..."
+msgstr ""
+
+#: advanced-reset-wp.php:293
+#, php-format
+msgid "All removed %d posts type %s!"
+msgstr ""
+
+#: advanced-reset-wp.php:308
+msgid "Starting remove themes..."
+msgstr ""
+
+#: advanced-reset-wp.php:321
+#, php-format
+msgid "Theme %s has been removed!"
+msgstr ""
+
+#: advanced-reset-wp.php:325
+#, php-format
+msgid "All removed %d themes!"
+msgstr ""
+
+#: advanced-reset-wp.php:338
+msgid "Starting remove plugins..."
+msgstr ""
+
+#: advanced-reset-wp.php:370
+#, php-format
+msgid "All removed %d plugins!"
+msgstr ""
+
+#: advanced-reset-wp.php:379
+msgid "Starting clear \"uploads\" folder..."
+msgstr ""
+
+#: advanced-reset-wp.php:381
+msgid "Folder \"uploads\" successful cleared!"
+msgstr ""
+
+#: include/view.php:7
+msgid "Reset type:"
+msgstr ""
+
+#: include/view.php:9
+msgid "Re-install WordPress"
+msgstr ""
+
+#: include/view.php:10
+msgid "Re-install WordPress and clear \"uploads\" folder"
+msgstr ""
+
+#: include/view.php:11
+msgid "Post cleaning"
+msgstr ""
+
+#: include/view.php:12
+msgid "Delete themes"
+msgstr ""
+
+#: include/view.php:13
+msgid "Delete plugins"
+msgstr ""
+
+#: include/view.php:14
+msgid "Clear \"uploads\" folder"
+msgstr ""
+
+#: include/view.php:15
+msgid "Deep cleaning"
+msgstr ""
+
+#: include/view.php:18
+msgid "Select types that you want to delete?"
+msgstr ""
+
+#: include/view.php:20
+msgid "Posts"
+msgstr ""
+
+#: include/view.php:21
+msgid "Pages"
+msgstr ""
+
+#: include/view.php:22
+msgid "Revisions"
+msgstr ""
+
+#: include/view.php:23
+msgid "Attachments"
+msgstr ""
+
+#: include/view.php:24
+msgid "All types"
+msgstr ""
+
+#: include/view.php:29
+msgid "Security key:"
+msgstr ""
+
+#: include/view.php:29
+msgid "reset"
+msgstr ""
+
+#: include/view.php:33
+msgid "Start cleaning"
+msgstr ""
+
+#: include/view.php:37
+msgid "Information:"
+msgstr ""
+
+#: include/view.php:38
+msgid ""
+"This option a reset makes a fresh installation of your database. Therefore, "
+"ANY data in your database will be lost!"
+msgstr ""
+
+#: include/view.php:39
+msgid ""
+"This option a reset makes a fresh installation of your database. Therefore, "
+"ANY data in your database will be lost. There will also be completely "
+"cleared folder \"uploads\"!"
+msgstr ""
+
+#: include/view.php:40
+msgid ""
+"This option is to remove posts, pages, revisions, attachments or all items!"
+msgstr ""
+
+#: include/view.php:41
+msgid "This option is to remove all of your theme except active theme!"
+msgstr ""
+
+#: include/view.php:42
+msgid "This option is to remove all of your plugins!"
+msgstr ""
+
+#: include/view.php:43
+msgid "This option is to clean the \"uploads\" folder!"
+msgstr ""
+
+#: include/view.php:44
+msgid ""
+"This option removes the your plugins and themes, cleared \"uploads\" folder "
+"and then start a re-installation WordPress!"
+msgstr ""
+
+#: include/view.php:55
+msgid "Donate"
+msgstr ""
+
+#: include/view.php:59
+msgid "Operation result:"
+msgstr ""
+
+#: include/view.php:67
+msgid "Operation not started =("
+msgstr ""

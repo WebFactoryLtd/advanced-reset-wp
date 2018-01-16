@@ -5,7 +5,7 @@ Plugin URI: https://github.com/3y3ik/advanced-reset-wp
 Description: Re-install WordPress, delete themes, plugins and posts, pages, attachments
 Author: 3y3ik
 Author URI: http://3y3ik.name/
-Version: 1.2.2
+Version: 1.2.3
 Text Domain: arwp
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -21,7 +21,7 @@ if ( ! is_admin() ) { return; }
 /**
  * Define common constants
  */
-if ( ! defined( 'ARWP_PLUGIN_VERSION' ) ) define( 'ARWP_PLUGIN_VERSION', '1.2.2' );
+if ( ! defined( 'ARWP_PLUGIN_VERSION' ) ) define( 'ARWP_PLUGIN_VERSION', '1.2.3' );
 if ( ! defined( 'ARWP_PLUGIN_DIR_PATH' ) ) define( 'ARWP_PLUGIN_DIR_PATH', plugins_url( '', __FILE__ ) );
 if ( ! defined( 'ARWP_PLUGIN_BASENAME' ) ) define( 'ARWP_PLUGIN_BASENAME', plugin_basename( __FILE__) );
 
@@ -30,7 +30,7 @@ if ( ! defined( 'ARWP_PLUGIN_BASENAME' ) ) define( 'ARWP_PLUGIN_BASENAME', plugi
  * Class ZYZIK_AdvancedResetWP
  * Basic Class For functioning plugin
  */
-class ZYZIK_AdvancedResetWP {
+class i3y3ik_AdvancedResetWP {
 
 	private $IN_SUB_MENU;
 	private $uploads_dir;
@@ -58,8 +58,8 @@ class ZYZIK_AdvancedResetWP {
 	public function arwp_register_menu() {
 		$this->IN_SUB_MENU = add_submenu_page(
 			'tools.php',
-			'Advanced Reset WP',
-			'Advanced Reset WP',
+			__( 'Advanced Reset WP', 'arwp' ),
+			__( 'Advanced Reset WP', 'arwp' ),
 			'manage_options',
 			'advanced-reset-wp',
 			array( $this, 'arwp_render_page' )
@@ -75,7 +75,8 @@ class ZYZIK_AdvancedResetWP {
 		if ( $hook != $this->IN_SUB_MENU ) { return false; }
 
 		wp_enqueue_style( 'arwp-admin-style-css', ARWP_PLUGIN_DIR_PATH . '/css/admin.css' );
-		wp_enqueue_script( 'arwp-all-js', ARWP_PLUGIN_DIR_PATH . '/js/all.js', array( 'jquery' ) );
+		wp_enqueue_script( 'donorbox', '//donorbox.org/install-popup-button.js', array(), null, true );
+		wp_enqueue_script( 'arwp-all-js', ARWP_PLUGIN_DIR_PATH . '/js/all.js', array( 'jquery' ), null, true );
 		wp_localize_script( 'arwp-all-js', 'arwp_ajax', array(
 			'nonce' => wp_create_nonce( 'arwp-ajax-nonce' ),
 		) );
@@ -407,4 +408,4 @@ class ZYZIK_AdvancedResetWP {
 
 }
 
-new ZYZIK_AdvancedResetWP();
+new i3y3ik_AdvancedResetWP();

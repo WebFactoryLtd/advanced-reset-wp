@@ -50,6 +50,11 @@
         </div>
 
         <div class="arwp-right">
+            <div id="donate">
+                <a class="dbox-donation-button" href="//donorbox.org/advanced-reset-wp?recurring=true&amount=1">
+                    <?php esc_html_e( 'Donate', 'arwp' ); ?>
+                </a>
+            </div>
             <div id="result">
                 <h3><?php esc_html_e( 'Operation result:', 'arwp' ); ?></h3>
                 <div id="loader">
